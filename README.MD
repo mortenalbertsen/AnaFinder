@@ -1,4 +1,4 @@
-This repository holds a solution for coding-challenge part of [TrustPilot application](https://followthewhiterabbit.trustpilot.com/cs/step3.html) 
+This repository finds anagrams of an input phrase among approximately 100000 words. 
 
 
 

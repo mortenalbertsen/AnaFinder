@@ -90,4 +90,5 @@ This filtering allows me to prune the input-file to approximately 1700 words (fr
 
 - Proper unittesting. 
 - Test whether performance could be improved by parallel-processing.
+- Make program portable; currently certain paths are hardcoded and relies on the existence of `hasher.py` in hardcoded directory. 
 

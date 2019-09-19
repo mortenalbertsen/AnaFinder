@@ -11,6 +11,9 @@ import CryptoKit
 
 extension String {
     
+    /**
+     Convenience method for getiing the md5 for a string. Very costly, does not scale for thousands of invocations.
+     */
     func md5() -> String {
         let commandToRun = "md5 -s \"\(self)\""
         let rawOutput = commandToRun.runAsCommand().trimmingCharacters(in: CharacterSet.newlines)
@@ -20,6 +23,9 @@ extension String {
         return String(rawOutput[equalSignPosition...]).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
     
+    /**
+     Run the string as a process. 
+     */
     func runAsCommand() -> String {
         let pipe = Pipe()
         let task = Process()

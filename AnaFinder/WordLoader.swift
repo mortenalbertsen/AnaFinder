@@ -33,6 +33,7 @@ class WordLoader {
             
             if word.count > referenceWord.count || word.count == 0 {
                 // Don't add words that are simply too long or are empty strings
+//                Swift.print("Skipping \(word)")
                 continue
             }
             
@@ -43,11 +44,13 @@ class WordLoader {
             // The word ABBA for instance is represented by [2,2,0,0,....,0] where zero'th index represent the number of A's in ABBA (2), the 1'st index represents the number of B's and so on.
             guard let frequencyMapForCandidateWord = word.frequencyMap() else {
                 // Word contains unsupported characters
+//                Swift.print("Contains unsupported characters: \(word)")
                 continue
             }
             var remainingCharacters = word.count
             for (index,count) in frequencyMapForCandidateWord.enumerated() {
                 if frequencyMapForReferenceWord[index] < count {
+//                    Swift.print("\"\(word)\" contains not needed character.")
                     shouldBeAdded = false
                     break
                 }

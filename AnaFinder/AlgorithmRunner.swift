@@ -18,7 +18,7 @@ class AlgorithmRunner {
         self.magicPhrase = magicPhrase
     }
     
-    func run() -> Set<[String]> {
+    func run() {
         // Read file and filter irrelevant words out
         let filteredWords = WordLoader.load(fromFile: self.file, referenceWord: magicPhrase)
         Swift.print("Number of filtered words: \(filteredWords.count)")
@@ -27,6 +27,6 @@ class AlgorithmRunner {
 
         // Kick off algoritm
         let combinationFinder = CombinationFinder(magicPhrase: magicPhrase, wordLookup: wordLookup)
-        return combinationFinder.findCombinations()
+        _ = combinationFinder.findCombinations()
     }
 }

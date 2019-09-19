@@ -22,68 +22,58 @@ class CombinationTester {
     }
     
     
-    func testForValidCombinations(ofWords words: Set<Int>) -> Set<[String]> {
-        var combinationsThatMatchesReferences = Set<[String]>()
+    func testForValidCombinations(ofWords words: Set<Int>) -> Set<String> {
+        var combinationsOfActualOriginalWords = Set<String>()
         let orderingsOfWords = self.wrapProduceAllCombinations(fromWords: words)
         
-//        assert(!orderingsOfWords.isEmpty)
-        let stopBag = [String](repeating: "a", count: 9)
         for combinationOfWords in orderingsOfWords {
-//            assert(!self.testedCombinations.contains(combinationOfWords))
-//            self.testedCombinations.insert(combinationOfWords)
-            if counter % 100000 == 0 {
-                Swift.print("Hello from other queue \(counter)")
-            }
-            counter = counter + 1
-            
             // Do actual lookup
             let stringForCombination = combinationOfWords.map { element in
                 return self.wordLookup.filteredWords[element]
             }
-//            assert(stopBag != stringForCombination)
-            
             let joinedString = stringForCombination.joined(separator: " ")
-            
-//            let md5ForCombination = joinedCombination.md5()
-//            if referenceHashes.contains(md5ForCombination) {
-//                combinationsThatMatchesReferences.insert(combinationOfWords)
-//                Swift.print("We got one. \"\(joinedCombination)\" hashes to \(md5ForCombination)")
-//            }
+            combinationsOfActualOriginalWords.insert(joinedString)
         }
-        return combinationsThatMatchesReferences
+        return combinationsOfActualOriginalWords
     }
     
     func wrapProduceAllCombinations(fromWords words: Set<Int>) -> [[Int]] {
-        if words == Set<Int>(arrayLiteral: 235, 490, 0, 1617, 1361, 1467, 1436, 1073, 1143) {
-            Swift.print("Stop here!")
-        }
-        let totalCombinations = words.count.factorial()
-        var arraysToPopulate = [[Int]](repeating: [Int](repeating: 0, count: words.count), count: totalCombinations)
-        produceAllCombinations(fromWords: words, outArrays: &arraysToPopulate)
-        //assert(!arraysToPopulate.contains([Int](repeating: 0, count: 9)))
-        return arraysToPopulate
-
+        return permute(items: words)
     }
     
     // TODO: Generalize this function to be generic
-    func produceAllCombinations(fromWords words: Set<Int>, outArrays: inout [[Int]]) {
-        var outerIndex = 0
-        for word in words {
-            var wordsCopy = words
-            wordsCopy.remove(word)
-            
-            for index in outerIndex..<outerIndex+(words.count-1).factorial() {
-                outArrays[index][0] = word
-            }
-            
-            var innerIndex = 1
-            while let next = wordsCopy.popFirst() {
-                for index in outerIndex..<outerIndex+(words.count-1).factorial() {
-                    outArrays[index][innerIndex] = next
-                }
-                innerIndex = innerIndex + 1
-            }
-            outerIndex = outerIndex + (words.count - 1).factorial()
-        }
+    func produceAllCombinations(fromWords words: Set<Int>, outArrays: inout [Int], startIndex : Int = 0) {
+        
     }
+    
+    /**
+            Stole this from: https://stackoverflow.com/a/34969388/5670505
+     */
+    func permute<C: Collection>(items: C) -> [[C.Iterator.Element]] {
+        var scratch = Array(items) // This is a scratch space for Heap's algorithm
+        var result: [[C.Iterator.Element]] = [] // This will accumulate our result
+
+        // Heap's algorithm
+        func heap(_ n: Int) {
+            if n == 1 {
+                result.append(scratch)
+                return
+            }
+
+            for i in 0..<n-1 {
+                heap(n-1)
+                let j = (n%2 == 1) ? 0 : i
+                scratch.swapAt(j, n-1)
+            }
+            heap(n-1)
+        }
+
+        // Let's get started
+        heap(scratch.count)
+
+        // And return the result we built up
+        return result
+    }
+
+    
 }
